@@ -12,12 +12,11 @@ int main() {
   sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT),
                           "Conway's Game of Life");
   window.setFramerateLimit(60);
-  std::vector<std::vector<sf::RectangleShape>> grid;
-  grid.resize(GRID_HEIGHT);
+  std::vector<std::vector<sf::RectangleShape>> grid(
+      GRID_HEIGHT, std::vector<sf::RectangleShape>(GRID_WIDTH));
 
   // Init grid
   for (int row = 0; row < GRID_HEIGHT; ++row) {
-    grid.resize(GRID_WIDTH);
     for (int col = 0; col < GRID_WIDTH; ++col) {
       sf::RectangleShape cell(sf::Vector2f(CELL_SIZE, CELL_SIZE));
       cell.setPosition(static_cast<float>(col * CELL_SIZE),
