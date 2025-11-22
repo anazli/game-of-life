@@ -19,7 +19,7 @@ class Grid {
         cell_shape.setPosition(static_cast<float>(col * cell_size),
                                static_cast<float>(row * cell_size));
         m_grid[row][col].setShape(cell_shape);
-        if (drand48() > 0.01) {
+        if (drand48() > 0.05) {
           m_grid[row][col].die();
         } else {
           m_grid[row][col].live();
