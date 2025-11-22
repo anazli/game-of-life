@@ -1,10 +1,13 @@
+#include <cell.h>
+#include <grid.h>
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
 
-constexpr int CELL_SIZE = 30;
-constexpr int GRID_WIDTH = 20;
-constexpr int GRID_HEIGHT = 15;
+constexpr int CELL_SIZE = 5;
+constexpr int GRID_WIDTH = 200;
+constexpr int GRID_HEIGHT = 200;
 constexpr int WINDOW_WIDTH = GRID_WIDTH * CELL_SIZE;
 constexpr int WINDOW_HEIGHT = GRID_HEIGHT * CELL_SIZE;
 
@@ -12,23 +15,9 @@ int main() {
   sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT),
                           "Conway's Game of Life");
   window.setFramerateLimit(60);
-  std::vector<std::vector<sf::RectangleShape>> grid(
-      GRID_HEIGHT, std::vector<sf::RectangleShape>(GRID_WIDTH));
+  Grid grid(GRID_HEIGHT, GRID_WIDTH);
+  grid.init(CELL_SIZE);
 
-  // Init grid
-  for (int row = 0; row < GRID_HEIGHT; ++row) {
-    for (int col = 0; col < GRID_WIDTH; ++col) {
-      sf::RectangleShape cell(sf::Vector2f(CELL_SIZE, CELL_SIZE));
-      cell.setPosition(static_cast<float>(col * CELL_SIZE),
-                       static_cast<float>(row * CELL_SIZE));
-      cell.setFillColor(sf::Color::Green);
-      cell.setOutlineThickness(1.0f);
-      cell.setOutlineColor(sf::Color::Black);
-      grid[row][col] = cell;
-    }
-  }
-
-  // Main Loop
   while (window.isOpen()) {
     sf::Event event;
     while (window.pollEvent(event)) {
@@ -42,24 +31,12 @@ int main() {
 
         int gridX = mouseX / CELL_SIZE;
         int gridY = mouseY / CELL_SIZE;
-
-        if (gridX >= 0 && gridX < GRID_WIDTH && gridY >= 0 &&
-            gridY < GRID_WIDTH) {
-          if (grid[gridY][gridX].getFillColor() == sf::Color::Green) {
-            grid[gridY][gridX].setFillColor(sf::Color::White);
-          } else {
-            grid[gridY][gridX].setFillColor(sf::Color::Green);
-          }
-        }
+        grid.resurrect(gridY, gridX);
       }
     }
+    grid.iterate();
     window.clear(sf::Color::Black);
-
-    for (int row = 0; row < GRID_HEIGHT; ++row) {
-      for (int col = 0; col < GRID_WIDTH; ++col) {
-        window.draw(grid[row][col]);
-      }
-    }
+    grid.draw(window);
     window.display();
   }
 

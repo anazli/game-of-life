@@ -11,7 +11,6 @@ class Game {
     } else if (cellShouldLive(neighbours)) {
       cell.live();
     }
-    cell.resetNeighbours();
   }
 
  private:
