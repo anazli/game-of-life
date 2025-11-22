@@ -6,10 +6,16 @@ class Game {
  public:
   void applyRulesFor(Cell& cell) {
     auto neighbours = cell.getNeighbours();
-    if (cellShouldDie(neighbours)) {
-      cell.die();
-    } else if (cellShouldLive(neighbours)) {
-      cell.live();
+    if (cell.isAlive()) {
+      if (cellShouldDie(neighbours)) {
+        cell.die();
+      } else if (cellShouldLive(neighbours)) {
+        cell.live();
+      }
+    } else {
+      if (neighbours == 3) {
+        cell.live();
+      }
     }
   }
 
