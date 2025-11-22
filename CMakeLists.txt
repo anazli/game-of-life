@@ -13,7 +13,10 @@ FetchContent_Declare(SFML
         GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-set(SOURCES src/main/main.cpp
+set(SOURCES src/main.cpp
+            src/cell.h
+            src/grid.h
+            src/game.h
 )
 
 add_executable(${EXE} ${SOURCES})
